@@ -9,7 +9,17 @@ export const routes = [
     method: 'GET',
     path: buildRoutePath('/patients'),
     handler: (req, res) => {
-      const patients = dataBase.select('patients')
+      const { search } = req.query
+
+      const patients = dataBase.select(
+        'patients',
+        search
+          ? {
+              name: search,
+              medicalRecord: search,
+            }
+          : null
+      )
 
       return res.end(JSON.stringify(patients))
     },

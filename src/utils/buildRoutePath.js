@@ -5,7 +5,7 @@ export const buildRoutePath = (path) => {
     '(?<$1>[a-z0-9\\-_]+)' //?<$1> is a group name
   )
 
-  const pathRegex = new RegExp(`^${pathWithParameters}$`)
+  const pathRegex = new RegExp(`^${pathWithParameters}(?<query>\\?(.*))?$`) // ? is optional and . is any character
 
   return pathRegex
 }
