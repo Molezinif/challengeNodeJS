@@ -5,11 +5,12 @@ export async function transformToJson(req: any, res: any): Promise<void> {
     buffers.push(chunk)
   }
 
+  const requestBody = Buffer.concat(buffers).toString()
+
   try {
-    req.body = JSON.parse(Buffer.concat(buffers).toString())
+    req.body = JSON.parse(requestBody)
   } catch {
     req.body = null
-    // no body
   }
 
   res.setHeader('Content-type', 'application/json')
