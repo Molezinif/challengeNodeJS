@@ -8,3 +8,5 @@
 - Methods
 - SOLID
 - middlewares
+- Regex
+- Route parameters
