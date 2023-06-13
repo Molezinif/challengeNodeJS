@@ -1,6 +1,8 @@
-import { Database } from './database.js'
-import { randomUUID } from 'node:crypto'
-import { buildRoutePath } from './utils/buildRoutePath.js'
+import { Database } from './database'
+import { randomUUID } from 'crypto'
+import { buildRoutePath } from './utils/buildRoutePath'
+import { IPatient, IUpdatePatient } from './interfaces/patient'
+import { IRoutes } from './interfaces/route'
 
 const dataBase = new Database()
 
@@ -13,12 +15,7 @@ export const routes = [
 
       const patients = dataBase.select(
         'patients',
-        search
-          ? {
-              name: search,
-              medicalRecord: search,
-            }
-          : null
+        search && { name: search as string, medicalRecord: search as string }
       )
 
       return res.end(JSON.stringify(patients))
@@ -36,7 +33,7 @@ export const routes = [
         birthDate,
         email,
         medicalRecord,
-      }
+      } as IPatient
 
       if (!name || !medicalRecord) {
         return res.writeHead(400).end()
@@ -57,7 +54,7 @@ export const routes = [
       const patient = {
         name,
         email,
-      }
+      } as IUpdatePatient
 
       dataBase.update('patients', id, patient)
 
@@ -78,4 +75,4 @@ export const routes = [
       return res.writeHead(204).end()
     },
   },
-]
+] as IRoutes[]

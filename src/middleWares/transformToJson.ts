@@ -1,5 +1,5 @@
-export async function transformToJson(req, res) {
-  const buffers = []
+export async function transformToJson(req: any, res: any): Promise<void> {
+  const buffers: Buffer[] = []
 
   for await (const chunk of req) {
     buffers.push(chunk)

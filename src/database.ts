@@ -1,13 +1,15 @@
 import fs from 'node:fs/promises'
+import path from 'node:path'
 
-const dataBasePath = new URL('../db.json', import.meta.url)
+const dataBasePath = path.join(__dirname, '..', 'db.json')
 
 export class Database {
-  #database = {}
+  #database: { [key: string]: any[] }
 
   constructor() {
+    this.#database = {}
     fs.readFile(dataBasePath, 'utf8')
-      .then((data) => {
+      .then((data: string) => {
         this.#database = JSON.parse(data)
       })
       .catch(() => {
@@ -15,11 +17,11 @@ export class Database {
       })
   }
 
-  #persist() {
+  #persist(): void {
     fs.writeFile(dataBasePath, JSON.stringify(this.#database))
   }
 
-  select(table, search) {
+  select(table: string, search?: { [key: string]: string }) {
     let data = this.#database[table] ?? []
 
     if (search) {
@@ -33,7 +35,7 @@ export class Database {
     return data
   }
 
-  insert(table, data) {
+  insert(table: string, data: any) {
     if (Array.isArray(this.#database[table])) {
       this.#database[table].push(data)
     } else {
@@ -45,7 +47,7 @@ export class Database {
     return data
   }
 
-  update(table, id, data) {
+  update(table: string, id: string, data: any) {
     const rowIndex = this.#database[table].findIndex((row) => row.id === id)
 
     const oldRow = this.#database[table][rowIndex]
@@ -58,7 +60,7 @@ export class Database {
     }
   }
 
-  delete(table, id) {
+  delete(table: string, id: string) {
     const rowIndex = this.#database[table].findIndex((row) => row.id === id)
 
     if (rowIndex > -1) {

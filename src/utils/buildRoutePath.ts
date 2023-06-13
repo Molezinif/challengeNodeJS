@@ -1,6 +1,6 @@
-export const buildRoutePath = (path) => {
+export const buildRoutePath = (path: string) => {
   const routeParametersRegex = /:([a-zA-z]+)/g
-  const pathWithParameters = path.replaceAll(
+  const pathWithParameters = path.replace(
     routeParametersRegex,
     '(?<$1>[a-z0-9\\-_]+)' //?<$1> is a group name
   )
