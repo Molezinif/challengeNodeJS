@@ -10,3 +10,5 @@
 - middlewares
 - Regex
 - Route parameters
+- Query parameters
+- Request body
