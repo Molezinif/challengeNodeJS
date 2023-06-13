@@ -38,6 +38,23 @@ export const routes = [
     },
   },
   {
+    method: 'PUT',
+    path: buildRoutePath('/patients/:id'),
+    handler: (req, res) => {
+      const { id } = req.params
+      const { name, email } = req.body
+
+      const patient = {
+        name,
+        email,
+      }
+
+      dataBase.update('patients', id, patient)
+
+      return res.writeHead(204).end()
+    },
+  },
+  {
     method: 'DELETE',
     path: buildRoutePath('/patients/:id'),
     handler: (req, res) => {
