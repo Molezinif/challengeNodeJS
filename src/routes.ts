@@ -15,7 +15,11 @@ export const routes = [
 
       const patients = dataBase.select(
         'patients',
-        search && { name: search as string, medicalRecord: search as string }
+        search && {
+          id: search as string,
+          name: search as string,
+          medicalRecord: search as string,
+        }
       )
 
       return res.end(JSON.stringify(patients))
@@ -67,11 +71,12 @@ export const routes = [
     handler: (req, res) => {
       const { id } = req.params
 
-      if (!id) {
-        return res.writeHead(400).end()
+      const deletePatient = dataBase.delete('patients', id)
+
+      if (!deletePatient) {
+        return res.writeHead(404).end()
       }
 
-      dataBase.delete('patients', id)
       return res.writeHead(204).end()
     },
   },
