@@ -22,14 +22,29 @@ export class Database {
   }
 
   select(table: string, search?: { [key: string]: string }) {
-    let data = this.#database[table] ?? []
+    const data = this.#database[table] || []
+
+    if (search && search.hasOwnProperty('id')) {
+      const id = search.id
+      const row = data.find((row) => row.id === id)
+
+      if (!row) {
+        return null
+      }
+    }
 
     if (search) {
-      data = data.filter((row) => {
+      const filteredData = data.filter((row) => {
         return Object.entries(search).some(([key, value]) => {
-          return row[key].toLowerCase().includes(value.toLowerCase())
+          return row[key]?.toLowerCase().includes(value.toLowerCase())
         })
       })
+
+      if (filteredData.length === 0) {
+        return null
+      }
+
+      return filteredData
     }
 
     return data

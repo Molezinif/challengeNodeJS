@@ -22,6 +22,10 @@ export const routes = [
         }
       )
 
+      if (!patients) {
+        return res.writeHead(404).end()
+      }
+
       return res.end(JSON.stringify(patients))
     },
   },
@@ -60,8 +64,13 @@ export const routes = [
         email,
       } as IUpdatePatient
 
-      dataBase.update('patients', id, patient)
+      const patientExists = dataBase.select('patients', { id })
 
+      if (!patientExists) {
+        return res.writeHead(404).end()
+      }
+
+      dataBase.update('patients', id, patient)
       return res.writeHead(204).end()
     },
   },
